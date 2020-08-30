@@ -20,6 +20,12 @@ spec:
         ports:
         - containerPort: 8080
         imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
         resources:
           requests:
             memory: "64Mi"
@@ -28,5 +34,7 @@ spec:
             memory: "128Mi"
             cpu: "270m"       
       restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
 
 
