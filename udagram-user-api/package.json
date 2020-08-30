@@ -1,5 +1,5 @@
 {
-  "name": "udagram-api",
+  "name": "udagram-users-api",
   "version": "2.0.0",
   "description": "",
   "main": "src/server.js",
@@ -9,7 +9,8 @@
     "dev": "ts-node-dev --respawn --transpileOnly ./src/server.ts",
     "prod": "tsc && node ./www/server.js",
     "clean": "rm -rf www/ || true",
-    "build": "npm run clean && tsc && cp -rf src/config www/config && cp .npmrc www/.npmrc && cp package.json www/package.json && cd www && zip -r Archive.zip . && cd ..",
+    "build": "npm run clean && tsc && cp -rf src/config www/config && cp .npmrc www/.npmrc && cp package.json www/package.json && cd www && cd ..",
+    "build-image": "docker build --tag diogosilverio/udagram-user-api --build-arg POSTGRES_USERNAME --build-arg POSTGRES_PASSWORD --build-arg POSTGRES_DB --build-arg POSTGRES_HOST --build-arg JWT_SECRET .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
