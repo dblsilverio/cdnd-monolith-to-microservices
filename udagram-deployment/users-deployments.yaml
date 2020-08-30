@@ -32,7 +32,48 @@ spec:
             path: /health
             port: 8080
           initialDelaySeconds: 3
-          periodSeconds: 3   
+          periodSeconds: 3 
+        env:
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: udagram-secrets
+              key: POSTGRES_USERNAME      
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: udagram-secrets
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-envs
+              key: POSTGRES_DB
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-envs
+              key: POSTGRES_HOST
+        - name: AWS_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-envs
+              key: AWS_REGION
+        - name: AWS_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-envs
+              key: AWS_BUCKET
+        - name: AWS_PROFILE
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-envs
+              key: AWS_PROFILE
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: udagram-envs
+              key: JWT_SECRET  
       imagePullSecrets:
         - name: regcred
       restartPolicy: Always
