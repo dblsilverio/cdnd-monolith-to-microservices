@@ -1,0 +1,7 @@
+POSTGRES_HOST=udagram.c61qcmptixue.us-east-1.rds.amazonaws.com
+POSTGRES_DB=udagram
+AWS_BUCKET=udagram-cdnd-microservices-dev
+AWS_REGION=us-east-1
+AWS_PROFILE=default
+JWT_SECRET=hellooo
+URL=http://localhost:8080

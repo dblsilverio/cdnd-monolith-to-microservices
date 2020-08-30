@@ -7,7 +7,7 @@
     "ng": "ng",
     "start": "ng serve",
     "clean": "rm -rf www/ || true",
-    "build": "npm run clean && ng build",
+    "build": "npm run clean && ng build --prod",
     "build-image": "docker build -t diogosilverio/udagram-frontend .",
     "test": "ng test",
     "lint": "ng lint",
