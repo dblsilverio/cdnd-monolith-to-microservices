@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udagram-frontend
+  labels:
+    service: udagram-frontend
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      service: udagram-frontend
+  template:
+    metadata:
+      labels:
+        service: udagram-frontend
+    spec:
+      containers:
+      - name: udagram-frontend        
+        image: diogosilverio/udagram-frontend
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "270m"       
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
+
+

@@ -6,7 +6,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "clean": "rm -rf www/ || true",
+    "build": "npm run clean && ng build",
+    "build-image": "docker build -t diogosilverio/udagram-frontend .",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
