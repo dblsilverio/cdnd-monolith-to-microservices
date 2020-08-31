@@ -6,9 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "clean": "rm -rf www/ || true",
-    "build": "npm run clean && ng build --prod",
-    "build-image": "docker build -t diogosilverio/udagram-frontend .",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -56,7 +54,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~8.0.0",
     "tslint": "~5.12.0",
-    "typescript": "^3.5.3"
+    "typescript": "3.5.3"
   },
   "description": "An Ionic project"
 }
