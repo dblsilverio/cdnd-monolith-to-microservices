@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: udagram-frontend
+  name: frontend
   labels:
     service: udagram-frontend
 spec:
@@ -15,7 +15,7 @@ spec:
         service: udagram-frontend
     spec:
       containers:
-      - name: udagram-frontend        
+      - name: frontend        
         image: diogosilverio/udagram-frontend
         ports:
         - containerPort: 8080

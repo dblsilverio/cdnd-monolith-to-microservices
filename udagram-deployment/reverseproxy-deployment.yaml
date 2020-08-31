@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: udagram-reverseproxy
+  name: reverseproxy
   labels:
     service: udagram-reverseproxy
 spec:
@@ -15,7 +15,7 @@ spec:
         service: udagram-reverseproxy
     spec:
       containers:
-      - name: udagram-reverseproxy        
+      - name: reverseproxy        
         image: diogosilverio/udagram-reverseproxy
         ports:
         - containerPort: 8080
