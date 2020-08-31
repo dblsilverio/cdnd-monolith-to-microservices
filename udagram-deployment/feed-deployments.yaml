@@ -33,6 +33,10 @@ spec:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 3
+        volumeMounts:
+        - name: aws-credentials
+          mountPath: /root/.aws
+          readOnly: true
         env:
         - name: POSTGRES_USERNAME
           valueFrom:
@@ -74,6 +78,10 @@ spec:
             configMapKeyRef:
               name: udagram-envs
               key: JWT_SECRET   
+      volumes:
+      - name: aws-credentials
+        secret:
+          secretName: aws-secrets
       imagePullSecrets:
         - name: regcred
       restartPolicy: Always
