@@ -7,8 +7,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-image": "docker build --tag diogosilverio/udagram-frontend:${TRAVIS_BUILD_ID:-latest} .",
-    "push-image": "docker push diogosilverio/udagram-frontend:${TRAVIS_BUILD_ID:-latest}",
+    "build-image": "docker build --tag diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER:-latest} .",
+    "push-image": "docker push diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER:-latest}",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
