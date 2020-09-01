@@ -10,7 +10,8 @@
     "prod": "tsc && node ./www/server.js",
     "clean": "rm -rf www/ || true",
     "build": "npm run clean && tsc && cp -rf src/config www/config && cp .npmrc www/.npmrc && cp package.json www/package.json && cd www && cd ..",
-    "build-image": "docker build --tag diogosilverio/udagram-users-api .",
+    "build-image": "docker build --tag diogosilverio/udagram-users-api:${TRAVIS_BUILD_ID:-latest} .",
+    "push-image": "docker push diogosilverio/udagram-users-api:${TRAVIS_BUILD_ID:-latest}",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
