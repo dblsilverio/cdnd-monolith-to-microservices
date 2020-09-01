@@ -9,6 +9,9 @@ services:
 # Pre-testing installs
 install:
   - npm -g install typescript@3.5.2
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
 
 # Scripts to be run such as tests
 before_script:
@@ -28,3 +31,9 @@ after_success:
   - cd udagram-user-api && npm run push-image && cd ..
   - cd udagram-reverseproxy && sh push.sh && cd ..
   - cd udagram-frontend && npm run push-image && cd ..
+  - mkdir ${HOME}/.kube
+  - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
+  - kubectl set image deployments/feed-api backend-feed=diogosilverio/udagram-feed-api:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/users-api backend-feed=diogosilverio/udagram-users-api:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/reverseproxy backend-feed=diogosilverio/udagram-reverseproxy:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/frontend backend-feed=diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER}
