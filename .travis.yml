@@ -16,10 +16,10 @@ before_script:
 
 script:
   - docker --version # print the version for logging
-  - cd udagram-feed-api && npm run build && npm run build-image && cd ..
-  - cd udagram-users-api && npm run build && npm run build-image && cd ..
+  - cd udagram-feed-api && npm install && npm run build && npm run build-image && cd ..
+  - cd udagram-users-api && npm install && npm run build && npm run build-image && cd ..
   - cd udagram-reverseproxy && sh build.sh && cd ..
-  - cd udagram-frontend && npm run build && npm run build-image && cd ..
+  - cd udagram-frontend && npm install && npm run build && npm run build-image && cd ..
 
 # Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
 after_success:
