@@ -25,6 +25,6 @@ script:
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - cd udagram-feed-api && npm run push-image && cd ..
-  - cd udagram-users-api && npm run push-image && cd ..
+  - cd udagram-user-api && npm run push-image && cd ..
   - cd udagram-reverseproxy && sh push.sh && cd ..
   - cd udagram-frontend && npm run push-image && cd ..
