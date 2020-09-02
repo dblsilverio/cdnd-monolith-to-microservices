@@ -22,10 +22,10 @@ before_script:
 
 script:
   - docker --version # print the version for logging
-  # - cd udagram-feed-api && npm install && npm run build && npm run build-image && cd ..
-  # - cd udagram-user-api && npm install && npm run build && npm run build-image && cd ..
-  # - cd udagram-reverseproxy && sh build.sh && cd ..
-  # - cd udagram-frontend && npm install && npm run build && npm run build-image && cd ..
+  - cd udagram-feed-api && npm install && npm run build && npm run build-image && cd ..
+  - cd udagram-user-api && npm install && npm run build && npm run build-image && cd ..
+  - cd udagram-reverseproxy && sh build.sh && cd ..
+  - cd udagram-frontend && npm install && npm run build && npm run build-image && cd ..
 
 # Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
 after_success:
@@ -34,14 +34,12 @@ after_success:
   - mkdir ${HOME}/.aws
   - echo "$AWS_CREDENTIALS" | base64 --decode > ${HOME}/.aws/credentials
   - kubectl get pod
-  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  # - cd udagram-feed-api && npm run push-image && cd ..
-  # - cd udagram-user-api && npm run push-image && cd ..
-  # - cd udagram-reverseproxy && sh push.sh && cd ..
-  # - cd udagram-frontend && npm run push-image && cd ..
-  # - mkdir ${HOME}/.kube
-  # - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
-  # - kubectl set image deployments/feed-api backend-feed=diogosilverio/udagram-feed-api:${TRAVIS_BUILD_NUMBER}
-  # - kubectl set image deployments/users-api backend-feed=diogosilverio/udagram-users-api:${TRAVIS_BUILD_NUMBER}
-  # - kubectl set image deployments/reverseproxy backend-feed=diogosilverio/udagram-reverseproxy:${TRAVIS_BUILD_NUMBER}
-  # - kubectl set image deployments/frontend backend-feed=diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER}
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - cd udagram-feed-api && npm run push-image && cd ..
+  - cd udagram-user-api && npm run push-image && cd ..
+  - cd udagram-reverseproxy && sh push.sh && cd ..
+  - cd udagram-frontend && npm run push-image && cd ..
+  - kubectl set image deployments/feed-api backend-feed=diogosilverio/udagram-feed-api:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/users-api backend-feed=diogosilverio/udagram-users-api:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/reverseproxy backend-feed=diogosilverio/udagram-reverseproxy:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/frontend backend-feed=diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER}
