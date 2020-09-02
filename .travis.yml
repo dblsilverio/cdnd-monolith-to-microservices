@@ -12,6 +12,9 @@ install:
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - sudo mv ./kubectl /usr/local/bin/kubectl
+  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  - unzip awscliv2.zip
+  - sudo ./aws/install
 
 # Scripts to be run such as tests
 before_script:
@@ -19,21 +22,24 @@ before_script:
 
 script:
   - docker --version # print the version for logging
-  - cd udagram-feed-api && npm install && npm run build && npm run build-image && cd ..
-  - cd udagram-user-api && npm install && npm run build && npm run build-image && cd ..
-  - cd udagram-reverseproxy && sh build.sh && cd ..
-  - cd udagram-frontend && npm install && npm run build && npm run build-image && cd ..
+  # - cd udagram-feed-api && npm install && npm run build && npm run build-image && cd ..
+  # - cd udagram-user-api && npm install && npm run build && npm run build-image && cd ..
+  # - cd udagram-reverseproxy && sh build.sh && cd ..
+  # - cd udagram-frontend && npm install && npm run build && npm run build-image && cd ..
 
 # Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
 after_success:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - cd udagram-feed-api && npm run push-image && cd ..
-  - cd udagram-user-api && npm run push-image && cd ..
-  - cd udagram-reverseproxy && sh push.sh && cd ..
-  - cd udagram-frontend && npm run push-image && cd ..
   - mkdir ${HOME}/.kube
   - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
-  - kubectl set image deployments/feed-api backend-feed=diogosilverio/udagram-feed-api:${TRAVIS_BUILD_NUMBER}
-  - kubectl set image deployments/users-api backend-feed=diogosilverio/udagram-users-api:${TRAVIS_BUILD_NUMBER}
-  - kubectl set image deployments/reverseproxy backend-feed=diogosilverio/udagram-reverseproxy:${TRAVIS_BUILD_NUMBER}
-  - kubectl set image deployments/frontend backend-feed=diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER}
+  - kubectl get pod
+  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # - cd udagram-feed-api && npm run push-image && cd ..
+  # - cd udagram-user-api && npm run push-image && cd ..
+  # - cd udagram-reverseproxy && sh push.sh && cd ..
+  # - cd udagram-frontend && npm run push-image && cd ..
+  # - mkdir ${HOME}/.kube
+  # - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
+  # - kubectl set image deployments/feed-api backend-feed=diogosilverio/udagram-feed-api:${TRAVIS_BUILD_NUMBER}
+  # - kubectl set image deployments/users-api backend-feed=diogosilverio/udagram-users-api:${TRAVIS_BUILD_NUMBER}
+  # - kubectl set image deployments/reverseproxy backend-feed=diogosilverio/udagram-reverseproxy:${TRAVIS_BUILD_NUMBER}
+  # - kubectl set image deployments/frontend backend-feed=diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER}
