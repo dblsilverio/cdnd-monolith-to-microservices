@@ -31,6 +31,8 @@ script:
 after_success:
   - mkdir ${HOME}/.kube
   - echo "$KUBE_CONFIG" | base64 --decode > ${HOME}/.kube/config
+  - mkdir ${HOME}/.aws
+  - echo "$AWS_CREDENTIALS" | base64 --decode > ${HOME}/.aws/credentials
   - kubectl get pod
   # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   # - cd udagram-feed-api && npm run push-image && cd ..
