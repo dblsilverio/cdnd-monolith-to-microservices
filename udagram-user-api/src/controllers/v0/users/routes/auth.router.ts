@@ -8,10 +8,15 @@ import * as jwt from 'jsonwebtoken';
 import {NextFunction} from 'connect';
 
 import * as EmailValidator from 'email-validator';
-import {config} from 'bluebird';
 
 const router: Router = Router();
 
+const EMAIL_REQ = 'Email is required or malformed.';
+const PASSWD_REQ = 'Password is required.';
+const USER_NF = 'User was not found..';
+const PASSWD_INV = 'Password was invalid.';
+const EMAIL_MIS = 'Email is missing or malformed.';
+const USER_EXISTS = 'User already exists.';
 
 async function generatePassword(plainTextPassword: string): Promise<string> {
   const saltRounds = 10;
@@ -56,26 +61,34 @@ router.post('/login', async (req: Request, res: Response) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  log(req, "Login attempt");
+
   if (!email || !EmailValidator.validate(email)) {
-    return res.status(400).send({auth: false, message: 'Email is required or malformed.'});
+    log(req, EMAIL_REQ);
+    return res.status(400).send({auth: false, message: EMAIL_REQ});
   }
 
   if (!password) {
-    return res.status(400).send({auth: false, message: 'Password is required.'});
+    log(req, PASSWD_REQ);
+    return res.status(400).send({auth: false, message: PASSWD_REQ});
   }
 
   const user = await User.findByPk(email);
   if (!user) {
-    return res.status(401).send({auth: false, message: 'User was not found..'});
+    log(req, USER_NF);
+    return res.status(401).send({auth: false, message: USER_NF});
   }
 
   const authValid = await comparePasswords(password, user.passwordHash);
 
   if (!authValid) {
-    return res.status(401).send({auth: false, message: 'Password was invalid.'});
+    log(req, PASSWD_INV);
+    return res.status(401).send({auth: false, message: PASSWD_INV});
   }
 
   const jwt = generateJWT(user);
+  log(req, "Login successful");
+
   res.status(200).send({auth: true, token: jwt, user: user.short()});
 });
 
@@ -84,17 +97,22 @@ router.post('/', async (req: Request, res: Response) => {
   const email = req.body.email;
   const plainTextPassword = req.body.password;
 
+  log(req, `Creating user: ${email}`);
+
   if (!email || !EmailValidator.validate(email)) {
-    return res.status(400).send({auth: false, message: 'Email is missing or malformed.'});
+    log(req, EMAIL_MIS);
+    return res.status(400).send({auth: false, message: EMAIL_MIS});
   }
 
   if (!plainTextPassword) {
-    return res.status(400).send({auth: false, message: 'Password is required.'});
+    log(req, PASSWD_REQ);
+    return res.status(400).send({auth: false, message: PASSWD_REQ});
   }
 
   const user = await User.findByPk(email);
   if (user) {
-    return res.status(422).send({auth: false, message: 'User already exists.'});
+    log(req, USER_EXISTS);
+    return res.status(422).send({auth: false, message: USER_EXISTS});
   }
 
   const generatedHash = await generatePassword(plainTextPassword);
@@ -105,7 +123,7 @@ router.post('/', async (req: Request, res: Response) => {
   });
 
   const savedUser = await newUser.save();
-
+  log(req, `User created: ${email}`);
 
   const jwt = generateJWT(savedUser);
   res.status(201).send({token: jwt, user: savedUser.short()});
@@ -114,5 +132,9 @@ router.post('/', async (req: Request, res: Response) => {
 router.get('/', async (req: Request, res: Response) => {
   res.send('auth');
 });
+
+function log(req: Request, message: string) {
+  console.log(`${new Date().toISOString()} [${req.requestId}] ${message}`);
+}
 
 export const AuthRouter: Router = router;

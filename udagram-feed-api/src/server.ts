@@ -7,6 +7,7 @@ import {IndexRouter} from './controllers/v0/index.router';
 import bodyParser from 'body-parser';
 import {config} from './config/config';
 import {V0_FEED_MODELS} from './controllers/v0/model.index';
+import { requestId } from './request.logger';
 
 
 (async () => {
@@ -27,6 +28,8 @@ import {V0_FEED_MODELS} from './controllers/v0/model.index';
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
     origin: config.url,
   }));
+
+  app.use(requestId);
 
   app.use('/api/v0/', IndexRouter);
 
