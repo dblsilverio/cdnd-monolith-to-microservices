@@ -39,7 +39,7 @@ after_success:
   - cd udagram-user-api && npm run push-image && cd ..
   - cd udagram-reverseproxy && sh push.sh && cd ..
   - cd udagram-frontend && npm run push-image && cd ..
-  - kubectl set image deployments/feed-api backend-feed=diogosilverio/udagram-feed-api:${TRAVIS_BUILD_NUMBER}
-  - kubectl set image deployments/users-api backend-feed=diogosilverio/udagram-users-api:${TRAVIS_BUILD_NUMBER}
-  - kubectl set image deployments/reverseproxy backend-feed=diogosilverio/udagram-reverseproxy:${TRAVIS_BUILD_NUMBER}
-  - kubectl set image deployments/frontend backend-feed=diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/feed-api feed-api=diogosilverio/udagram-feed-api:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/users-api users-api=diogosilverio/udagram-users-api:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/reverseproxy reverseproxy=diogosilverio/udagram-reverseproxy:${TRAVIS_BUILD_NUMBER}
+  - kubectl set image deployments/frontend frontend=diogosilverio/udagram-frontend:${TRAVIS_BUILD_NUMBER}
